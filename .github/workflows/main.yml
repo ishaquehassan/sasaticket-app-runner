@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: 'runner'
-          token: {{ secrets.GitHub_PAT }}
+          token: ${{ secrets.PAT_TOKEN }}
           repository: 'sastaTicket/sastaticket-mobile-app'
 
       - run: |
