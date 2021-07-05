@@ -1,21 +1,31 @@
 on:
   push:
     branches:
-      - "master"
+      - 'master'
 
 name: Fun release builds
 jobs:
   android:
     name: Android
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        flavor: ['dev', 'qa', 'stage', 'prod']
+
     steps:
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
+          key: 'java-12x-cache'
+          restore-keys: |
+            'java-12x-cache'
       - uses: subosito/flutter-action@v1
         with:
-          # flutter-version: '2.2.2'
-          channel: 'stable'
+          flutter-version: '2.2.2'
+          key: 'flutter-222-cache'
+          restore-keys: |
+            'flutter-222-cache'
+          # channel: 'stable'
       - uses: actions/checkout@v2
         with:
           ref: 'runner'
@@ -23,44 +33,19 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }}
           repository: 'sastaTicket/sastaticket-mobile-app'
 
+      - name: Create base64 file
+        run: |
+          echo "$PRIVATE_KEY" > base64.text
+          openssl base64 -d -in base64.text -out sastaticket-prod.keystore
+          env:
+            PRIVATE_KEY: ${{ secrets.STORE64 }}
 
       - name: Fetch packages
         run: cd app && flutter pub get
 
       - name: Build dev release apk
-        run: cd app && flutter build apk --flavor dev
+        run: cd app && flutter build apk --flavor ${{ matrix.flavor }}
       - uses: actions/upload-artifact@v2
         with:
-          name: app-dev-release.apk
-          path: app/build/app/outputs/flutter-apk/app-dev-release.apk
-
-      - name: Build stage release apk
-        run: cd app && flutter build apk --flavor stage
-      - uses: actions/upload-artifact@v2
-        with:
-          name: app-stage-release.apk
-          path: app/build/app/outputs/flutter-apk/app-stage-release.apk
-
-      - name: Build qa release apk
-        run: cd app && flutter build apk --flavor qa
-      - uses: actions/upload-artifact@v2
-        with:
-          name: app-qa-release.apk
-          path: app/build/app/outputs/flutter-apk/app-qa-release.apk
-
-      - name: Build prod release apk
-        run: cd app && flutter build apk --flavor prod
-      - uses: actions/upload-artifact@v2
-        with:
-          name: app-prod-release.apk
-          path: app/build/app/outputs/flutter-apk/app-prod-release.apk
-
-      - name: Build prod release app bundle
-        run: cd app && flutter build appbundle --flavor prod
-
-      # - name: Create Android Release
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     artifacts: 'app/build/app/outputs/apk/release/app-release.apk'
-      #     token: ${{ secrets.TOKEN }}
-      #     allowUpdates: true
+          name: app-${{ matrix.flavor }}-release.apk
+          path: app/build/app/outputs/flutter-apk/app-${{ matrix.flavor }}-release.apk
