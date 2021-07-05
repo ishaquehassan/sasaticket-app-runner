@@ -1,0 +1,32 @@
+on:
+  push:
+    tags:
+      - '*'
+
+name: Release Builds
+jobs:
+  android:
+    name: Android
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+      - name: Install NDK
+        run: echo "y" | sudo /usr/local/lib/android/sdk/tools/bin/sdkmanager --install "ndk;20.0.5594570" --sdk_root=${ANDROID_SDK_ROOT}
+      - uses: actions/checkout@v2
+        with:
+          path: 'app'
+      - run: |
+          cd app
+          flutter pub get
+          flutter build apk -t lib/main.firebase.dart --release
+      - name: Create Android Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: 'app/build/app/outputs/apk/release/app-release.apk'
+          token: ${{ secrets.TOKEN }}
+          allowUpdates: true
