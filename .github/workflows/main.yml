@@ -1,9 +1,9 @@
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - "master"
 
-name: Release Builds
+name: Fun release builds
 jobs:
   android:
     name: Android
@@ -15,18 +15,25 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
-      - name: Install NDK
-        run: echo "y" | sudo /usr/local/lib/android/sdk/tools/bin/sdkmanager --install "ndk;20.0.5594570" --sdk_root=${ANDROID_SDK_ROOT}
+      # - name: Install NDK
+      #   run: echo "y" | sudo /usr/local/lib/android/sdk/tools/bin/sdkmanager --install "ndk;20.0.5594570" --sdk_root=${ANDROID_SDK_ROOT}
       - uses: actions/checkout@v2
         with:
-          path: 'app'
+          ref: 'runner'
+          token: {{ secrets.GitHub_PAT }}
+          repository: 'sastaTicket/sastaticket-mobile-app'
+
       - run: |
-          cd app
           flutter pub get
-          flutter build apk -t lib/main.firebase.dart --release
-      - name: Create Android Release
-        uses: ncipollo/release-action@v1
+          dart scripts/android.dart
+
+      - uses: actions/upload-artifact@v2
         with:
-          artifacts: 'app/build/app/outputs/apk/release/app-release.apk'
-          token: ${{ secrets.TOKEN }}
-          allowUpdates: true
+          name: my-apks
+          path: build/app/outputs/flutter-apk/app-dev-release.apk
+      # - name: Create Android Release
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: 'app/build/app/outputs/apk/release/app-release.apk'
+      #     token: ${{ secrets.TOKEN }}
+      #     allowUpdates: true
