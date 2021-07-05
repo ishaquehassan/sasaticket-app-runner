@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/voxlabsio/sasaticket-app-runner#readme",
   "dependencies": {
+    "@googleapis/drive": "^0.3.1",
     "args-parser": "^1.2.0",
+    "googleapis": "^80.1.0",
     "moment": "^2.29.1"
   },
   "devDependencies": {

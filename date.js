@@ -1,13 +1,11 @@
 const moment = require('moment');
 const fs = require('fs');
-const args = require('args-parser')(process.argv);
-
-
 
 async function main()  {
     try {
         const timestamp = moment().format('Y-MMM-DD HH:mm:A');
-        const file = fs.writeFileSync('date.txt', timestamp)
+        fs.writeFileSync('date.txt', timestamp);
+        process.exit();
     } catch (error) {
         console.error(error);
         process.exit(1);
