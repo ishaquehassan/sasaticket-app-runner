@@ -1,5 +1,4 @@
 const {google} = require('googleapis');
-const moment = require('moment');
 const fs = require('fs');
 const args = require('args-parser')(process.argv);
 
@@ -18,9 +17,6 @@ const drive = google.drive({
 async function main()  {
     try {
         const timestamp = fs.readFileSync('date.txt', 'utf8')
-        console.log(timestamp);
-
-        return;
 
         const dir = await drive.files.list({
             q: "mimeType='application/vnd.google-apps.folder' and name='sastaticket'",
@@ -44,6 +40,17 @@ async function main()  {
         } else {
             subDirId = subDir.data.files[0].id
         }
+        const nameChunks = args.file.split('/')
+
+        await drive.files.create({
+            requestBody: { 
+                parents: [subDirId],
+                name: nameChunks[nameChunks.length-1],
+                mimeType: 'application/vnd.android.package-archive'
+            }
+        })
+
+        console.log(args.file, "Uploaded")
 
     } catch (error) {
         console.error(error);
