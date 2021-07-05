@@ -36,9 +36,11 @@ jobs:
       - name: Create base64 file
         run: |
           echo $PRIVATE_KEY > base64.text
-          openssl base64 -d -in base64.text -out sastaticket-prod.keystore
           env:
             PRIVATE_KEY: ${{ secrets.STORE64 }}
+
+      - name: Decode base64 file
+        run: openssl base64 -d -in base64.text -out sastaticket-prod.keystore
 
       - name: Fetch packages
         run: cd app && flutter pub get
