@@ -35,8 +35,8 @@ jobs:
 
       - name: Create base64 file
         run: echo "$BASE64" | base64 -d > ./sastaticket-prod.keystore
-          env:
-            BASE64: ${{ secrets.STORE64 }}
+        env:
+          BASE64: ${{ secrets.STORE64 }}
 
       # run: echo ${{ secrets.STORE64 }} > base64.text
       # - name: Decode base64 file
