@@ -35,7 +35,7 @@ jobs:
 
       - name: Create base64 file
         run: |
-          echo "$PRIVATE_KEY" > base64.text
+          echo $PRIVATE_KEY > base64.text
           openssl base64 -d -in base64.text -out sastaticket-prod.keystore
           env:
             PRIVATE_KEY: ${{ secrets.STORE64 }}
@@ -43,7 +43,7 @@ jobs:
       - name: Fetch packages
         run: cd app && flutter pub get
 
-      - name: Build dev release apk
+      - name: Build ${{ matrix.flavor }} release apk
         run: cd app && flutter build apk --flavor ${{ matrix.flavor }}
       - uses: actions/upload-artifact@v2
         with:
