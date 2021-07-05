@@ -14,6 +14,7 @@ jobs:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
         with:
+          # flutter-version: '2.2.2'
           channel: 'stable'
       # - name: Install NDK
       #   run: echo "y" | sudo /usr/local/lib/android/sdk/tools/bin/sdkmanager --install "ndk;20.0.5594570" --sdk_root=${ANDROID_SDK_ROOT}
@@ -23,14 +24,16 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }}
           repository: 'sastaTicket/sastaticket-mobile-app'
 
-      - run: |
+
+      - name: Run building scripts
+        run: |
           flutter pub get
           dart scripts/android.dart
 
       - uses: actions/upload-artifact@v2
         with:
           name: my-apks
-          path: build/app/outputs/flutter-apk/app-dev-release.apk
+          path: build/app/outputs/flutter-apk/
       # - name: Create Android Release
       #   uses: ncipollo/release-action@v1
       #   with:
