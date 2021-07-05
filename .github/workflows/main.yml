@@ -16,24 +16,48 @@ jobs:
         with:
           # flutter-version: '2.2.2'
           channel: 'stable'
-      # - name: Install NDK
-      #   run: echo "y" | sudo /usr/local/lib/android/sdk/tools/bin/sdkmanager --install "ndk;20.0.5594570" --sdk_root=${ANDROID_SDK_ROOT}
       - uses: actions/checkout@v2
         with:
           ref: 'runner'
+          path: 'app'
           token: ${{ secrets.PAT_TOKEN }}
           repository: 'sastaTicket/sastaticket-mobile-app'
 
 
-      - name: Run building scripts
-        run: |
-          flutter pub get
-          dart scripts/android.dart
+      - name: Fetch packages
+        run: cd app && flutter pub get
 
+      - name: Build dev release apk
+        run: cd app && flutter build apk --flavor dev
       - uses: actions/upload-artifact@v2
         with:
-          name: my-apks
-          path: build/app/outputs/flutter-apk/
+          name: app-dev-release.apk
+          path: app/build/app/outputs/flutter-apk/app-dev-release.apk
+
+      - name: Build stage release apk
+        run: cd app && flutter build apk --flavor stage
+      - uses: actions/upload-artifact@v2
+        with:
+          name: app-stage-release.apk
+          path: app/build/app/outputs/flutter-apk/app-stage-release.apk
+
+      - name: Build qa release apk
+        run: cd app && flutter build apk --flavor qa
+      - uses: actions/upload-artifact@v2
+        with:
+          name: app-qa-release.apk
+          path: app/build/app/outputs/flutter-apk/app-qa-release.apk
+
+      - name: Build prod release apk
+        run: cd app && flutter build apk --flavor prod
+      - uses: actions/upload-artifact@v2
+        with:
+          name: app-prod-release.apk
+          path: app/build/app/outputs/flutter-apk/app-prod-release.apk
+
+      - name: Build prod release app bundle
+        run: cd app && flutter build appbundle --flavor prod
+
       # - name: Create Android Release
       #   uses: ncipollo/release-action@v1
       #   with:
