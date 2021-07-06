@@ -23,7 +23,6 @@ jobs:
       - name: Create folder if dev
         if: matrix.flavor == 'dev'
         run: node createDir
-
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
