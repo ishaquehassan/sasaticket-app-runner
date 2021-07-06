@@ -16,6 +16,10 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install npm packages
         run: npm i
+      - name: Decode service account base64
+        run: echo "$ACCOUNT_ENV64" | base64 -d > ./service-key.json
+        env:
+          ACCOUNT_ENV64: ${{ secrets.SERVICE_ACCOUNT64 }}
       - name: Create folder if dev
         if: ${{ matrix.flavor }} == 'dev'
         run: node createDir
@@ -46,11 +50,6 @@ jobs:
         run: echo "$KEYSTORE_ENV64" | base64 -d > ./sastaticket-prod.keystore
         env:
           KEYSTORE_ENV64: ${{ secrets.STORE64 }}
-
-      - name: Decode service account base64
-        run: echo "$ACCOUNT_ENV64" | base64 -d > ./service-key.json
-        env:
-          ACCOUNT_ENV64: ${{ secrets.SERVICE_ACCOUNT64 }}
 
       - name: Fetch packages
         run: cd app && flutter pub get
