@@ -11,7 +11,6 @@ async function main()  {
         if (!subDir.data.files.length) {
             await drive.createDir(timestamp, rootId)
         } 
-
         console.log(timestamp, "folder created")
         process.exit(0);
 

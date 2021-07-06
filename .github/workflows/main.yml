@@ -13,12 +13,16 @@ jobs:
         flavor: ['dev', 'qa', 'stage', 'prod']
 
     steps:
+      - uses: actions/checkout@v2
+      - name: Install npm packages
+        run: npm i
+      - name: Create folder if dev
+        if: ${{ matrix.flavor }} == 'dev'
+        run: node createDir
+
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-          # key: 'java-12x-cache'
-          # restore-keys: |
-          #   'java-12x-cache'
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '2.2.2'
@@ -30,10 +34,6 @@ jobs:
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-222
-
-      - uses: actions/checkout@v2
-      - name: Install npm packages
-        run: npm i
 
       - uses: actions/checkout@v2
         with:
