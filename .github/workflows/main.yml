@@ -21,7 +21,7 @@ jobs:
         env:
           ACCOUNT_ENV64: ${{ secrets.SERVICE_ACCOUNT64 }}
       - name: Create folder if dev
-        if: ${{ matrix.flavor }} == 'dev'
+        if: matrix.flavor == 'dev'
         run: node createDir
 
       - uses: actions/setup-java@v1
