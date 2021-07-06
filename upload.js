@@ -51,6 +51,7 @@ async function main()  {
         })
 
         console.log(args.file, "Uploaded")
+        process.exit(0);
 
     } catch (error) {
         console.error(error);

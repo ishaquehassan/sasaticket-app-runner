@@ -16,16 +16,15 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-          key: 'java-12x-cache'
-          restore-keys: |
-            'java-12x-cache'
+          # key: 'java-12x-cache'
+          # restore-keys: |
+          #   'java-12x-cache'
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '2.2.2'
-          key: 'flutter-222-cache'
-          restore-keys: |
-            'flutter-222-cache'
-          # channel: 'stable'
+          # key: 'flutter-222-cache'
+          # restore-keys: |
+          #   'flutter-222-cache'
       - uses: actions/checkout@v2
         with:
           ref: 'runner'
@@ -33,14 +32,15 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }}
           repository: 'sastaTicket/sastaticket-mobile-app'
 
-      - name: Create base64 file
-        run: echo "$BASE64" | base64 -d > ./sastaticket-prod.keystore
+      - name: Decode keystore base64
+        run: echo "$KEYSTORE_ENV64" | base64 -d > ./sastaticket-prod.keystore
         env:
-          BASE64: ${{ secrets.STORE64 }}
+          KEYSTORE_ENV64: ${{ secrets.STORE64 }}
 
-      # run: echo ${{ secrets.STORE64 }} > base64.text
-      # - name: Decode base64 file
-      #   run: openssl base64 -d -in base64.text -out sastaticket-prod.keystore
+      - name: Decode service account base64
+        run: echo "$ACCOUNT_ENV64" | base64 -d > ./service-key.json
+        env:
+          ACCOUNT_ENV64: ${{ secrets.SERVICE_ACCOUNT64 }}
 
       - name: Fetch packages
         run: cd app && flutter pub get
