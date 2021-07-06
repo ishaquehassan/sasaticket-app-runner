@@ -1,0 +1,26 @@
+on:
+  push:
+    branches:
+      - 'email'
+
+name: Email sent experiment
+jobs:
+  email:
+    name: Email
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{secrets.MAIL_USERNAME}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject: [Github Actions] apk built
+          to: hackerhgl@gmail.com
+          secure: true
+          body: Your built is ready
+          reply_to: no-reply@voxlabs.io
+          ignore_cert: true
+          # attachments: attachments.zip,git.diff,./dist/static/main.js
+          priority: high
