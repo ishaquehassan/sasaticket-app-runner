@@ -20,6 +20,7 @@ jobs:
           to: hackerhgl@gmail.com
           secure: true
           body: Your built is ready
+          from: st-build-runner@voxlabs.io
           reply_to: no-reply@voxlabs.io
           ignore_cert: true
           # attachments: attachments.zip,git.diff,./dist/static/main.js
