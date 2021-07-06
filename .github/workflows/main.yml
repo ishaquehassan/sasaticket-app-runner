@@ -32,6 +32,8 @@ jobs:
           key: ${{ runner.OS }}-flutter-install-cache-222
 
       - uses: actions/checkout@v2
+      - name: Install npm packages
+        run: npm i
 
       - uses: actions/checkout@v2
         with:
