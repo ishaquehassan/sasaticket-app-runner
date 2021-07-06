@@ -22,9 +22,17 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '2.2.2'
-          # key: 'flutter-222-cache'
-          # restore-keys: |
-          #   'flutter-222-cache'
+      - name: Flutter doctor
+        run: flutter doctor
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v2
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-222
+
+      - uses: actions/checkout@v2
+
       - uses: actions/checkout@v2
         with:
           ref: 'runner'
