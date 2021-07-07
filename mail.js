@@ -20,8 +20,8 @@ async function main(){
         var mailOptions = {
             to: args.to, 
             from: args.from,
-            subject: "Github Action Runner: SUCCESS",
-            text: `Build uploaded to drive successfully.\n\nlink: ${url}\n\nsend via SendInBlue SMTP server.\n\nThis is an automated generated email. Please don't reply.`,
+            subject: "Sastaticket.pk release builds [Github Actions]",
+            text: `Android release builds uploaded to drive successfully.\n\nGoogle drive link: ${url}\n\nsent via SendInBlue SMTP server.\n\nThis is an automated generated email, Please do not reply. Contact via slack for quick response`,
         }
         await smtpTransport.sendMail(mailOptions, function(error, response){
             if(error){
