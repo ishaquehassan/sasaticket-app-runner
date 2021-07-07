@@ -16,12 +16,12 @@ jobs:
           server_port: 465
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSWORD}}
-          subject: '[Github Actions] apk built'
+          subject: '[Github Actions build runner] apk built success fully'
           to: hackerhgl@gmail.com
           secure: true
-          body: Your built is ready
-          from: st-build-runner@voxlabs.io
-          reply_to: no-reply@voxlabs.io
+          body: 'This is an automated mail sent via github actions runner.\nscript author @hackerhgl'
+          from: hiqbal@voxlabs.io
+          reply_to: hiqbal@voxlabs.io
           ignore_cert: true
           # attachments: attachments.zip,git.diff,./dist/static/main.js
           priority: high
