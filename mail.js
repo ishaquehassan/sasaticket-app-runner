@@ -15,7 +15,7 @@ async function main(){
             service: "Gmail",
             auth: {
                 user: args.user,
-                pass: args.password,
+                pass: args.key,
             }
         });
         var mailOptions = {

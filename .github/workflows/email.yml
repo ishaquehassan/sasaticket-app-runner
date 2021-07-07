@@ -16,8 +16,10 @@ jobs:
         run: echo "$ACCOUNT_ENV64" | base64 -d > ./service-key.json
         env:
           ACCOUNT_ENV64: ${{ secrets.SERVICE_ACCOUNT64 }}
+
       - name: Send emails
-        run: node mail --to=$TO --from=$FROM --user=$USERNAME --password=$PASSWORD
+        run: node mail --to=$TO --from=$FROM --user=$USERNAME --key=$PASSWORD
+        # run: node mail --to=$TO --from=$FROM --user=$USERNAME --password=$PASSWORD
         env:
           TO: ${{ secrets.MAIL_TO }}
           FROM: ${{ secrets.MAIL_FROM }}
