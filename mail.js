@@ -1,24 +1,30 @@
 const nodemailer = require('nodemailer');
+const args = require('args-parser')(process.argv);
+const drive = require('./drive');
+const fs = require('fs');
+
 
 async function main(){
     try {
-        var name = "Hamza";
-        var from = "hiqbal@voxlabs.io";
-        var message = "req.body.message";
-        var to = 'hackerhgl@gmail.com';
+        const configs = JSON.parse(args.configs);
+        const timestamp = "2021-Jul-07 11:58:AM";
+        const timestamp = fs.readFileSync('date.txt', 'utf8');
+        const dir = await drive.getFolderByName(timestamp);
+        // console.log(dir.data.files[0]);
+        const url = dir.data.files[0].webViewLink
+        // return url
         var smtpTransport = nodemailer.createTransport({
             service: "Gmail",
             auth: {
-                user: "hiqbal@voxlabs.io",
-                // pass: "lmaohamza"
-                pass: "rcsenjkxuhoeoimf"
+                user: args.user,
+                pass: args.password,
             }
         });
         var mailOptions = {
-            from: from,
-            to: to, 
-            subject: name+' | new message !',
-            text: message
+            to: configs.to, 
+            from: configs.from,
+            subject: "Github Action Runner: SUCCESS",
+            text: `Build uploaded to drive successfully.\n\nlink: ${url}`,
         }
         await smtpTransport.sendMail(mailOptions, function(error, response){
             if(error){

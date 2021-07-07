@@ -9,37 +9,12 @@ jobs:
     name: Email
     runs-on: ubuntu-latest
     steps:
-      - name: Send email
-        uses: devellany/send-mail@v1.0.2
-        with:
-          host: smtp.google.com
-          # Optional port (defaults to 465)
-          port: 465
-          account: ${{secrets.MAIL_USERNAME}}
-          password: ${{secrets.MAIL_PASSWORD}}
-          sender: Github Action Runner
-          from: hiqbal@voxlas.io
-          to: hackerhgl@gmail.com
-          # from: ${{secrets.MAIL_FROM}}
-          # to: ${{secrets.MAIL_RECIPIENTS}}
-          subject: mail title.
-          body: your messages.
-          # Optional content type (defaults to text/plain)
-          contentType: text/plain
-          # Optional attachment files (JSON type. require property 'path')
-          attachments: '[{"path":"readme.md"}]'
-
-          # - name: Send mail
-      #   uses: dawidd6/action-send-mail@v3
-      #   with:
-      #     server_address: smtp.gmail.com
-      #     server_port: 465
-      #     username: ${{secrets.MAIL_USERNAME}}
-      #     password: ${{secrets.MAIL_PASSWORD}}
-      #     subject: '[Github Actions build runner] apk built success fully'
-      #     to: hackerhgl@gmail.com
-      #     secure: true
-      #     body: 'This is an automated mail sent via github actions runner.\nscript author @hackerhgl'
-      #     from: hiqbal@voxlabs.io
-      #     reply_to: hiqbal@voxlabs.io
-      #     priority: high
+      - uses: actions/checkout@v2
+      - name: Install npm packages
+        run: npm i
+      - name: Decode service account base64
+        run: echo "$ACCOUNT_ENV64" | base64 -d > ./service-key.json
+        env:
+          ACCOUNT_ENV64: ${{ secrets.SERVICE_ACCOUNT64 }}
+      - name: Send emails
+        run: node mail --configs=${{ secrets.MAIL_CONFIGS }} --user=${{ secrets.MAIL_USERNAME }} --password=${{ secrets.MAIL_PASSWORD }}
