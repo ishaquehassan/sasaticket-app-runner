@@ -62,6 +62,7 @@ jobs:
 
   send-email:
     name: Send email to recipients
+        needs: build-apks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -73,7 +74,6 @@ jobs:
           ACCOUNT_ENV64: ${{ secrets.SERVICE_ACCOUNT64 }}
 
       - name: Send emails
-        needs: build-apks
         run: node mail --to=$TO --from=$FROM --user=$USERNAME --key=$PASSWORD
         # run: node mail --to=$TO --from=$FROM --user=$USERNAME --password=$PASSWORD
         env:
