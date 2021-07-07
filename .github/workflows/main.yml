@@ -73,7 +73,7 @@ jobs:
           ACCOUNT_ENV64: ${{ secrets.SERVICE_ACCOUNT64 }}
 
       - name: Send emails
-        need: build-apks
+        needs: build-apks
         run: node mail --to=$TO --from=$FROM --user=$USERNAME --key=$PASSWORD
         # run: node mail --to=$TO --from=$FROM --user=$USERNAME --password=$PASSWORD
         env:
