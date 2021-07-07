@@ -6,14 +6,6 @@ const fs = require('fs');
 
 async function main(){
     try {
-        console.log((args.configs.split('')));
-        console.log('/////');
-        console.log('/////');
-        console.log(JSON.stringify(args.configs));
-        console.log('/////');
-        console.log('/////');
-        const configs = JSON.parse(args.configs);
-        // const timestamp = "2021-Jul-07 11:58:AM";
         const timestamp = fs.readFileSync('date.txt', 'utf8');
         const dir = await drive.getFolderByName(timestamp);
         // console.log(dir.data.files[0]);
@@ -27,8 +19,8 @@ async function main(){
             }
         });
         var mailOptions = {
-            to: configs.to, 
-            from: configs.from,
+            to: args.to, 
+            from: args.from,
             subject: "Github Action Runner: SUCCESS",
             text: `Build uploaded to drive successfully.\n\nlink: ${url}`,
         }

@@ -17,8 +17,9 @@ jobs:
         env:
           ACCOUNT_ENV64: ${{ secrets.SERVICE_ACCOUNT64 }}
       - name: Send emails
-        run: node mail --configs=$CONFIGS --user=$USERNAME --password=$PASSWORD
+        run: node mail --to=$TO --from=$FROM --user=$USERNAME --password=$PASSWORD
         env:
-          CONFIGS: ${{ secrets.MAIL_CONFIGS }}
+          TO: ${{ secrets.MAIL_TO }}
+          FROM: ${{ secrets.MAIL_FROM }}
           USERNAME: ${{ secrets.MAIL_USERNAME }}
           PASSWORD: ${{ secrets.MAIL_PASSWORD }}
