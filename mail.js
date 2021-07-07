@@ -6,9 +6,10 @@ const fs = require('fs');
 
 async function main(){
     try {
-        console.log(args);
+        console.log((args.configs));
         console.log('/////');
         console.log('/////');
+        console.log(JSON.stringify(args.configs));
         console.log('/////');
         console.log('/////');
         const configs = JSON.parse(args.configs);
