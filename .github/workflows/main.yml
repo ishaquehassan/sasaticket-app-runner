@@ -5,7 +5,7 @@ on:
 
 name: Release build jobs
 jobs:
-  build-apks:
+  apks:
     name: Android build release matrix
     runs-on: ubuntu-latest
     strategy:
@@ -60,9 +60,9 @@ jobs:
           name: app-${{ matrix.flavor }}-release.apk
           path: app/build/app/outputs/flutter-apk/app-${{ matrix.flavor }}-release.apk
 
-  send-email:
+  email:
+    needs: apks
     name: Send email to recipients
-        needs: build-apks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
