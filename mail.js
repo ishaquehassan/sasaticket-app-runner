@@ -8,11 +8,10 @@ async function main(){
     try {
         const timestamp = fs.readFileSync('date.txt', 'utf8');
         const dir = await drive.getFolderByName(timestamp);
-        // console.log(dir.data.files[0]);
         const url = dir.data.files[0].webViewLink
-        // return url
         var smtpTransport = nodemailer.createTransport({
-            service: "Gmail",
+            host: "smtp-relay.sendinblue.com",
+            port: 587,
             auth: {
                 user: args.user,
                 pass: args.key,
@@ -22,16 +21,19 @@ async function main(){
             to: args.to, 
             from: args.from,
             subject: "Github Action Runner: SUCCESS",
-            text: `Build uploaded to drive successfully.\n\nlink: ${url}`,
+            text: `Build uploaded to drive successfully.\n\nlink: ${url}\n\nsend via SendInBlue SMPTP`,
         }
         await smtpTransport.sendMail(mailOptions, function(error, response){
             if(error){
+                process.exit(1)
                 console.log(error);
             }else{
+                process.exit()
                 console.log(response);
             }
         });
     } catch (error) {
+        process.exit(1)
         console.error(error);   
     }
 }
