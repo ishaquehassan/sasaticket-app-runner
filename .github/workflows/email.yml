@@ -22,6 +22,7 @@ jobs:
           body: 'This is an automated mail sent via github actions runner.\nscript author @hackerhgl'
           from: hiqbal@voxlabs.io
           reply_to: hiqbal@voxlabs.io
+          content_type: text/plain
           # ignore_cert: true
           # attachments: attachments.zip,git.diff,./dist/static/main.js
           priority: high
