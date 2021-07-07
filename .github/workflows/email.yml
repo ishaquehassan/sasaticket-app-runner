@@ -19,6 +19,6 @@ jobs:
       - name: Send emails
         run: node mail --configs=$CONFIGS --user=$USERNAME --password=$PASSWORD
         env:
-          CONFIGS: secrets.MAIL_CONFIGS
-          USERNAME: secrets.MAIL_USERNAME
-          PASSWORD: secrets.MAIL_PASSWORD
+          CONFIGS: ${{ secrets.MAIL_CONFIGS }}
+          USERNAME: ${{ secrets.MAIL_USERNAME }}
+          PASSWORD: ${{ secrets.MAIL_PASSWORD }}
