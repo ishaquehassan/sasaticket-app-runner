@@ -7,6 +7,7 @@ const auth = new google.auth.GoogleAuth({
     ],
 });
 
+const fields = ['webViewLink','name','kind','id', 'mimeType'].map(e => "files/"+e).join(',');
 const drive = google.drive({
     version: 'v3',
     auth,
@@ -25,7 +26,9 @@ async function createDir(name, parentId) {
 
 async function getFolderByName(name) {
     return drive.files.list({
-            q: `mimeType='application/vnd.google-apps.folder' and name='${name}'`,
+        fields,
+        // fields: 'files/webViewLink,files/id,files/kind',
+        q: `mimeType='application/vnd.google-apps.folder' and name='${name}'`,
     });
     
 }

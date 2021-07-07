@@ -9,18 +9,19 @@ jobs:
     name: Email
     runs-on: ubuntu-latest
     steps:
-      - name: Send mail
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{secrets.MAIL_USERNAME}}
-          password: ${{secrets.MAIL_PASSWORD}}
-          subject: [Github Actions] apk built
-          to: hackerhgl@gmail.com
-          secure: true
-          body: Your built is ready
-          reply_to: no-reply@voxlabs.io
-          ignore_cert: true
-          # attachments: attachments.zip,git.diff,./dist/static/main.js
-          priority: high
+      - uses: actions/checkout@v2
+      - name: Install npm packages
+        run: npm i
+      - name: Decode service account base64
+        run: echo "$ACCOUNT_ENV64" | base64 -d > ./service-key.json
+        env:
+          ACCOUNT_ENV64: ${{ secrets.SERVICE_ACCOUNT64 }}
+
+      - name: Send emails
+        run: node mail --to=$TO --from=$FROM --user=$USERNAME --key=$PASSWORD
+        # run: node mail --to=$TO --from=$FROM --user=$USERNAME --password=$PASSWORD
+        env:
+          TO: ${{ secrets.MAIL_TO }}
+          FROM: ${{ secrets.MAIL_FROM }}
+          USERNAME: ${{ secrets.MAIL_USERNAME }}
+          PASSWORD: ${{ secrets.MAIL_PASSWORD }}

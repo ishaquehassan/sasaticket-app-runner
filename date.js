@@ -3,7 +3,8 @@ const fs = require('fs');
 
 async function main()  {
     try {
-        const timestamp = moment().format('Y-MMM-DD HH:mm:A');
+        const timestamp = moment().format('Y-MMM-DD HH:mm:ss:A');
+        console.log(timestamp);
         fs.writeFileSync('date.txt', timestamp);
         process.exit();
     } catch (error) {
