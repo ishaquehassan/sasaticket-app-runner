@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send email
-        uses: devellany/send-mailer
+        uses: devellany/send-mailer@v1.0.2
         with:
           host: smtp.google.com
           # Optional port (defaults to 465)
