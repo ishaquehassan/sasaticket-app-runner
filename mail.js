@@ -7,6 +7,10 @@ const fs = require('fs');
 async function main(){
     try {
         console.log(args);
+        console.log('/////');
+        console.log('/////');
+        console.log('/////');
+        console.log('/////');
         const configs = JSON.parse(args.configs);
         // const timestamp = "2021-Jul-07 11:58:AM";
         const timestamp = fs.readFileSync('date.txt', 'utf8');
