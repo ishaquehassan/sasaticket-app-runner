@@ -25,16 +25,13 @@ async function main(){
         }
         await smtpTransport.sendMail(mailOptions, function(error, response){
             if(error){
-                process.exit(1)
                 console.log(error);
             }else{
-                process.exit()
                 console.log(response);
             }
         });
     } catch (error) {
         console.error(error);   
-        process.exit(1)
     }
 }
 
