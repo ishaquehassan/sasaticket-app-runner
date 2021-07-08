@@ -60,7 +60,7 @@ jobs:
         run: |
           cd app
           flutter build appbundle --flavor prod
-          node upload --file="build/app/outputs/bundle/prodRelease/app-prod-release.aab"
+          node ../upload --file="app/build/app/outputs/bundle/prodRelease/app-prod-release.aab"
       - uses: actions/upload-artifact@v2
         with:
           name: app-${{ matrix.flavor }}-release.apk
