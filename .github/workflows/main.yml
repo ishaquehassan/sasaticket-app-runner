@@ -55,6 +55,12 @@ jobs:
       - name: Build ${{ matrix.flavor }} release apk
         run: cd app && flutter build apk --flavor ${{ matrix.flavor }}
       - run: node upload.js --file="app/build/app/outputs/flutter-apk/app-${{ matrix.flavor }}-release.apk"
+      - name: Make prod bundle
+        if: matrix.flavor == 'prod'
+        run: |
+          cd app
+          flutter build appbundle --flavor prod
+          node upload --file="build/app/outputs/bundle/prodRelease/app-prod-release.aab"
       - uses: actions/upload-artifact@v2
         with:
           name: app-${{ matrix.flavor }}-release.apk
